@@ -2,7 +2,7 @@ classdef CenterWindowAlignment < BaseWindowAlignment
     methods (Access = public)
         function start_index = get_start_index(obj)
             arguments(Input)
-                obj LeftWindowAlignment
+                obj CenterWindowAlignment
             end
             arguments(Output)
                 start_index int32
@@ -13,11 +13,11 @@ classdef CenterWindowAlignment < BaseWindowAlignment
 
         function window = window_generator(obj, index)
             arguments(Output)
-                window (1,2) int32
+                window (1,:) int32
             end
 
             side_bound = ((obj.window_size / 2) - 0.5);
-            if index + size_bound > obj.dataset_size
+            if index + side_bound > obj.dataset_size
                 window = [index - side_bound, obj.dataset_size];
             else
                 window = index - side_bound:1:index + side_bound;

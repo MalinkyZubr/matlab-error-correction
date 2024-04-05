@@ -7,12 +7,12 @@ classdef LeftWindowAlignment < BaseWindowAlignment
             start_index = obj.window_size;
         end
 
-        function window = generate_window(obj, index)
+        function window = window_generator(obj, index)
             arguments(Output)
-                window (1,2) int32
+                window (1,:) int32
             end
 
-            window = index - obj.window_size:1:index;
+            window = index + 1 - obj.window_size:1:index;
         end
     end
 end

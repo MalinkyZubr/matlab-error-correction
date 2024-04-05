@@ -61,11 +61,11 @@ classdef ErrorCorrectionWorkflow < handle
             for index = operation.get_start_index():1:numel(obj.x_axis)
                 slice_indicies = operation.get_window(index);
 
+                disp(slice_indicies)
                 x_slice = obj.x_axis(slice_indicies);
                 y_slice = obj.y_axis(slice_indicies);
 
-                new_y_value = operation.filter_slice(x_slice, y_slice);
-                obj.y_axis(index) = new_y_value;
+                obj.y_axis(index) = operation.filter_slice(x_slice, y_slice);
             end
         end
     end

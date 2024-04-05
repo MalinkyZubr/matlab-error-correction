@@ -9,7 +9,7 @@ classdef RightWindowAlignment < BaseWindowAlignment
 
         function window = window_generator(obj, index)
             arguments(Output)
-                window (1,2) int32
+                window (1,:) int32
             end
 
             if index + obj.window_size > obj.dataset_size

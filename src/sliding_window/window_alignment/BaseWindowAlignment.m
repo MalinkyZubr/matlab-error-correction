@@ -1,27 +1,27 @@
-classdef (Abstract) BaseWindowAlignment
+classdef (Abstract) BaseWindowAlignment < matlab.mixin.Heterogeneous & handle
     properties(Access = protected)
         dataset_size int32
         window_size int32
     end
 
     methods (Access = public)
-        function obj = set_window_size(obj, window_size)
+        function set_window_size(obj, window_size)
             obj.window_size = window_size;
         end
 
-        function obj = set_dataset_size(obj, dataset_size)
+        function set_dataset_size(obj, dataset_size)
             obj.dataset_size = dataset_size;
         end
 
         function window = generate_window(obj, index)
             arguments(Output)
-                window (1,2) int32
+                window (1,:) int32
             end
 
             if index > obj.dataset_size
-                error("") % implement me
+                error("I am a silly goober") % implement me
             end
-            window = obj.generate_window(index);
+            window = obj.window_generator(index);
         end
     end
     methods (Abstract)

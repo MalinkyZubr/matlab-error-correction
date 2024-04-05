@@ -8,11 +8,11 @@ classdef MeanGlitchDetector < SlidingWindow
             obj.threshold = threshold;
         end
 
-        function y_value_filtered = filter_action(obj, x_slice, y_slice)
+        function y_value_filtered = filter_action(obj, x_slice, y_slice, requested_index)
             window_mean = mean(y_slice);
-            y_value_unfiltered = y_slice(obj.get_start_index());
+            y_value_unfiltered = y_slice(requested_index);
             
-            if abs(y_slice(y_value_unfiltered - window_mean)) > obj.threshold
+            if abs(y_value_unfiltered - window_mean) > obj.threshold
                 y_value_filtered = window_mean;
             else
                 y_value_filtered = y_value_unfiltered;
