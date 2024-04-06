@@ -1,0 +1,2 @@
+classdef CascadingParallelStrategy < ExecutionStrategy
+end
