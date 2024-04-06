@@ -14,5 +14,9 @@ classdef LeftWindowAlignment < BaseWindowAlignment
 
             window = index + 1 - obj.window_size:1:index;
         end
+
+        function weight_window = generate_weights_window(obj)
+            weight_window = 0:1:obj.window_size;
+        end
     end
 end

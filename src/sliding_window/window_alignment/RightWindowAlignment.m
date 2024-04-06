@@ -18,5 +18,9 @@ classdef RightWindowAlignment < BaseWindowAlignment
                 window = index:1:index + obj.window_size;
             end
         end
+
+        function weight_window = generate_weights_window(obj)
+            weight_window = -obj.window_size:1:0;
+        end
     end
 end

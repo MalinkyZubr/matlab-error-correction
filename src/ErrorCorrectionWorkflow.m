@@ -6,15 +6,19 @@ classdef ErrorCorrectionWorkflow < handle
     end
 
     methods (Access = public)
-        function obj = ErrorCorrectionWorkflow(x_axis, y_axis)
+        function obj = ErrorCorrectionWorkflow()
+            obj.operations = cell(0);
+        end
+
+        function set_dataset(obj, x_axis, y_axis)
             arguments(Input)
+                obj ErrorCorrectionWorkflow
                 x_axis (1,:) double {mustBeReal}
                 y_axis (1,:) double {mustBeReal, mustBeEqualSize(y_axis, x_axis)}
             end
 
             obj.x_axis = x_axis;
             obj.y_axis = y_axis;
-            obj.operations = cell(0);
         end
 
         function add_operation(obj, operation)
@@ -38,12 +42,18 @@ classdef ErrorCorrectionWorkflow < handle
                 y_axis_filtered (1,:) double
             end
             
-            numel(obj.operations)
+
             if numel(obj.operations) == 0
                 error("No operations present in workflow");
             else
+                completed_operations = 0;
+                percent_completion = 0;
                 for i = 1:1:numel(obj.operations)
-                    obj.run_operation(obj.operations{i});
+                    obj.operations{i}.run(obj.x_axis, obj.y_axis);
+                    completed_operations = completed_operations + 1;
+                    percent_completion = (completed_operations / numel(obj.operations)) * 100;
+
+                    fprintf("Operation %d completed: %.2f%% complete", completed_operations, percent_completion)
                 end
             end
 
@@ -51,22 +61,5 @@ classdef ErrorCorrectionWorkflow < handle
         end
     end
     methods (Access = private)
-        function run_operation(obj, operation)
-            arguments (Input)
-                obj ErrorCorrectionWorkflow
-                operation SlidingWindow
-            end
-
-            disp("running next operation")
-            for index = operation.get_start_index():1:numel(obj.x_axis)
-                slice_indicies = operation.get_window(index);
-
-                x_slice = obj.x_axis(slice_indicies);
-                y_slice = obj.y_axis(slice_indicies);
-
-                new_y_value = operation.filter_slice(x_slice, y_slice);
-                obj.y_axis(index) = new_y_value;
-            end
-        end
     end
 end

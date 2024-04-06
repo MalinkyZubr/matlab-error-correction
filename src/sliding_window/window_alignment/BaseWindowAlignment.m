@@ -27,5 +27,6 @@ classdef (Abstract) BaseWindowAlignment < matlab.mixin.Heterogeneous & handle
     methods (Abstract)
         start_index = get_start_index(obj, dataset_size, window_size)
         window = window_generator(obj, index)
+        weight_window = generate_weights_window()
     end
 end

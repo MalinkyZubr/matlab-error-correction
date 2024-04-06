@@ -1,4 +1,4 @@
-classdef (Abstract) SlidingWindow < handle
+classdef (Abstract) SlidingWindow < Operation
     properties (Access = protected)
         width int32
         window_alignment BaseWindowAlignment
@@ -8,11 +8,11 @@ classdef (Abstract) SlidingWindow < handle
         y_value_filtered = filter_action(obj, x_slice, y_slice, requested_index)
     end
 
-    methods (Static,Sealed,Access=protected)
-        function default_object = getDefaultScalarElement
-           default_object = SquareFilter(1, CenterWindowAlignment());
-        end
-    end
+    %methods (Static,Sealed,Access=protected)
+    %    function default_object = getDefaultScalarElement
+    %       default_object = SquareFilter(1, CenterWindowAlignment());
+    %    end
+    %end
 
     methods (Access = public)
         function obj = SlidingWindow(width, window_alignment)
@@ -28,6 +28,28 @@ classdef (Abstract) SlidingWindow < handle
                 window_alignment.set_window_size(width);
                 obj.window_alignment = window_alignment;
             end
+        end
+        
+        % REPURPOSE THIS FUNCTION
+        function output = run(obj, x_axis, y_axis)
+            arguments (Input)
+                obj SlidingWindow
+                x_axis (1,:) double
+                y_axis (1,:) double
+            end
+
+            disp("running next operation")
+            for index = obj.get_start_index():1:numel(x_axis)
+                slice_indicies = obj.get_window(index);
+
+                x_slice = x_axis(slice_indicies);
+                y_slice = y_axis(slice_indicies);
+
+                new_y_value = obj.filter_slice(x_slice, y_slice);
+                y_axis(index) = new_y_value;
+            end
+
+            output = y_axis;
         end
 
         function y_value_filtered = filter_slice(obj, x_slice, y_slice)

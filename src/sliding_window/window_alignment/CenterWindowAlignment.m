@@ -23,5 +23,10 @@ classdef CenterWindowAlignment < BaseWindowAlignment
                 window = index - side_bound:1:index + side_bound;
             end
         end
+
+        function weight_window = generate_weights_window(obj)
+            side_bound = ((obj.window_size / 2) - 0.5);
+            weight_window = -side_bound:1:side_bound;
+        end
     end
 end
