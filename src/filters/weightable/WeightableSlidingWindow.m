@@ -16,7 +16,7 @@ classdef (Abstract) WeightableSlidingWindow < SlidingWindow
             end
 
             obj@SlidingWindow(width, window_alignment);
-            if nargs < 3
+            if nargin < 3
                 obj.weight_scheme = ConstantWeightScheme(1);
             else
                 obj.weight_scheme = weight_scheme;

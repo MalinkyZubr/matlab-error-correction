@@ -11,12 +11,12 @@ classdef LeftWindowAlignment < BaseWindowAlignment
             arguments(Output)
                 window (1,:) int32
             end
-
-            window = index + 1 - obj.window_size:1:index;
-        end
-
-        function weight_window = generate_weights_window(obj)
-            weight_window = 0:1:obj.window_size;
+            
+            if index + 1 - obj.window_size < 1
+                window = 1:1:obj.window_size - index;
+            else
+                window = index + 1 - obj.window_size:1:index;
+            end
         end
     end
 end

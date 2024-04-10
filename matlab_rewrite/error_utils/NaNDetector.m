@@ -1,6 +1,9 @@
 classdef NaNDetector < Operation
     methods(Access = public)
-        function output = run(obj, x_axis, y_axis)
+        function output = run(obj, dataset)
+            x_axis = dataset(1,:);
+            y_axis = dataset(2,:);
+            
             for start_index = 1:1:numel(x_axis)
                 value = y_axis(start_index);
 
@@ -17,10 +20,9 @@ classdef NaNDetector < Operation
 
                     fit_value = polyval(p, x_axis(start_index));
                     y_axis(start_index) = fit_value;
-                    end_index = start_index;
                 end
             end
-            output = y_axis;
+            output = cat(1, x_axis, y_axis);
         end
     end
 end

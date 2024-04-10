@@ -1,0 +1,2 @@
+classdef CascadingParallel < RunStrategy
+end

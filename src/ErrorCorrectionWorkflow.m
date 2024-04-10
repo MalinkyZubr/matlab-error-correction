@@ -19,12 +19,18 @@ classdef ErrorCorrectionWorkflow < handle
 
             obj.x_axis = x_axis;
             obj.y_axis = y_axis;
+
+            if numel(obj.operations)
+                for operation = 1:1:numel(obj.operations)
+                    obj.operations{operation}.set_dataset_size(dataset_size)
+                end
+            end
         end
 
         function add_operation(obj, operation)
             arguments (Input)
                 obj ErrorCorrectionWorkflow
-                operation SlidingWindow
+                operation Operation
             end
             
             operation.set_dataset_size(numel(obj.x_axis));
@@ -49,11 +55,12 @@ classdef ErrorCorrectionWorkflow < handle
                 completed_operations = 0;
                 percent_completion = 0;
                 for i = 1:1:numel(obj.operations)
-                    obj.operations{i}.run(obj.x_axis, obj.y_axis);
+                    fprintf("Now running " + class(obj.operations{i}) + "\n");
+                    obj.y_axis = obj.operations{i}.run(obj.x_axis, obj.y_axis);
                     completed_operations = completed_operations + 1;
                     percent_completion = (completed_operations / numel(obj.operations)) * 100;
 
-                    fprintf("Operation %d completed: %.2f%% complete", completed_operations, percent_completion)
+                    fprintf("Operation %d completed: %.2f%% complete\n", completed_operations, percent_completion)
                 end
             end
 

@@ -38,14 +38,14 @@ classdef (Abstract) SlidingWindow < Operation
                 y_axis (1,:) double
             end
 
-            disp("running next operation")
-            for index = obj.get_start_index():1:numel(x_axis)
-                slice_indicies = obj.get_window(index);
+            for index = 1:1:numel(x_axis)
+                slice_indicies = obj.window_alignment.generate_window(index);
 
                 x_slice = x_axis(slice_indicies);
                 y_slice = y_axis(slice_indicies);
 
                 new_y_value = obj.filter_slice(x_slice, y_slice);
+
                 y_axis(index) = new_y_value;
             end
 
@@ -74,7 +74,7 @@ classdef (Abstract) SlidingWindow < Operation
                 obj SlidingWindow
                 dataset_size int32
             end
-
+            set_dataset_size@Operation(obj, dataset_size);
             obj.window_alignment.set_dataset_size(dataset_size);
         end
 

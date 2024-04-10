@@ -16,17 +16,14 @@ classdef CenterWindowAlignment < BaseWindowAlignment
                 window (1,:) int32
             end
 
-            side_bound = ((obj.window_size / 2) - 0.5);
+            side_bound = ((obj.window_size / 2) - 0.5) - 1;
             if index + side_bound > obj.dataset_size
-                window = [index - side_bound, obj.dataset_size];
+                window = index - side_bound:1:obj.dataset_size;
+            elseif index - side_bound < 1
+                window = 1:1:index + side_bound + abs(index - side_bound) + 1;
             else
-                window = index - side_bound:1:index + side_bound;
+                window = index - side_bound - (index + side_bound - obj.dataset_size):1:index + side_bound;
             end
-        end
-
-        function weight_window = generate_weights_window(obj)
-            side_bound = ((obj.window_size / 2) - 0.5);
-            weight_window = -side_bound:1:side_bound;
         end
     end
 end

@@ -1,6 +1,6 @@
-classdef (Abstract) BaseWeightScheme < handle & matlab.mixing.Heterogeneous
+classdef (Abstract) BaseWeightScheme < handle & matlab.mixin.Heterogeneous
     properties (Access = protected)
-        weight_schema (1,:) double
+        window_alignment BaseWindowAlignment
         height_coefficient double
     end
     methods (Abstract)
@@ -12,7 +12,7 @@ classdef (Abstract) BaseWeightScheme < handle & matlab.mixing.Heterogeneous
             arguments(Input)
                 height_coefficient double
             end
-            obj.height_coefficient = height_coefficient;
+               obj.height_coefficient = height_coefficient;
         end
         function weight_setup(obj, window_alignment)
             arguments(Input)
@@ -20,20 +20,26 @@ classdef (Abstract) BaseWeightScheme < handle & matlab.mixing.Heterogeneous
                 window_alignment BaseWindowAlignment
             end
             
-            obj.weight_schema = obj.weight_generator(window_alignment.generate_weights_window());
+            obj.window_alignment = window_alignment;
+        end
+        
+        function weights = get_weights(obj, index)
+            weights = obj.weight_generator(obj.window_alignment.generate_weights_window(index));
         end
 
-        function weight_schema = get_weight_schema(obj)
-            weight_schema = obj.weight_schema;
-        end
-
-        function weighted_data = apply_weights(obj, unweighted_data)
+        function weighted_data = apply_weights(obj, unweighted_data, index)
             arguments(Input)
                 obj BaseWeightScheme
                 unweighted_data (1,:);
+                index int32
             end
-            mustBeEqualSize(unweighted_data, obj.weight_schema);
-            weighted_data = unweighted_data .* obj.weight_schema;
+
+            weights = obj.get_weights(index);
+            if numel(unweighted_data) ~= numel(weights)
+                error("Data size must equal weight size, %d, %d", numel(unweighted_data), numel(weights));
+            else
+                weighted_data = unweighted_data .* weights;
+            end
         end
     end
 end
