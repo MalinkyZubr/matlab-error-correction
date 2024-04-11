@@ -1,4 +1,13 @@
 classdef ZeroDetector < Operation
+    % Description:
+    %   Runs the zero detector operation on the dataset, replacing negative values with zeros.
+    %
+    % Inputs:
+    %   obj     - Instance of the ZeroDetector.
+    %   dataset - Input dataset on which the operation is performed.
+    %
+    % Outputs:
+    %   output  - Dataset with negative values replaced by zeros.
     methods(Access = public)
         function output = run(obj, dataset)
             x_axis = dataset(1,:);

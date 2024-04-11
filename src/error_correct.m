@@ -1,3 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ENGR 132 
+% Program Description: This function applies error correction to multiple datasets using a specified workflow.
+%
+% Function Call: 
+%   [datasets] = error_correct(datasets, workflow)
+%
+% Input Arguments:
+%   datasets (1xN cell array): A cell array containing N datasets to be error corrected.
+%   workflow (ErrorCorrectionWorkflow object): An object representing the workflow to be applied for error correction.
+%
+% Output Arguments:
+%   datasets (1xN cell array): A cell array containing N error-corrected datasets.
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [datasets] = error_correct(datasets, workflow)
     arguments(Input)
         datasets (1,:) cell

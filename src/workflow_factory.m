@@ -1,4 +1,20 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ENGR 132 
+% Program Description 
+% generate an ErrorCorrectionWorkflow object with parameters defined within the function
+%
+% Function Call
+% workflow = workflow_factory(thorough);
+%
+% Input Arguments
+% thorough: boolean value to specify if the mountain formation filters should be applied
+%
+% Output Arguments
+% workflow: ErrorCorrectionWorkflow to correct noise on datasets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [workflow] = workflow_factory(thorough)
+    % add operations
     workflow = ErrorCorrectionWorkflow(CascadingSequential());
     workflow.add_preprocessor(NaNDetector());
     workflow.add_preprocessor(MinMaxNormalizer());
@@ -12,6 +28,7 @@ function [workflow] = workflow_factory(thorough)
     workflow.add_operation(ZeroDetector());
     workflow.add_operation(GlitchDetector(0.6, 20, 3, 5));
 
+    % insert filters for mountain formation fine_grain -> general -> fine_grain
     widths = [5, 11, 21, 51, 21, 11, 5];
     if thorough
         for index = 1:1:numel(widths)

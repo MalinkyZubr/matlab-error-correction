@@ -1,5 +1,15 @@
 classdef CascadingSequential < RunStrategy
     methods(Access = public)
+         % Description:
+        %   Executes operations sequentially on the dataset in a cascading manner.
+        %
+        % Inputs:
+        %   obj        - Instance of the CascadingSequential.
+        %   operations - Cell array of operations to be executed.
+        %   dataset    - Input dataset on which operations are performed.
+        %
+        % Outputs:
+        %   corrected_dataset - Corrected dataset after executing operations sequentially.
         function corrected_dataset = run_operations(obj, operations, dataset)
             length_initial = numel(dataset(1,:));
             for index = 1:1:numel(operations(1,:))

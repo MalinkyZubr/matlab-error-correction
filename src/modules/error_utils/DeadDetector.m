@@ -4,11 +4,26 @@ classdef DeadDetector < Operation
         degree int32
     end
     methods (Access = public)
+        % Description:
+        %   Constructor for DeadDetector class.
+        %
+        % Inputs:
+        %   threshold          - Threshold for detecting dead zones.
+        %   polynomial_degree  - Degree of polynomial for curve fitting.
         function obj = DeadDetector(threshold, polynomial_degree)
             obj.threshold = threshold;
             obj.degree = polynomial_degree;
         end
 
+        % Description:
+        %   Runs the dead zone detection operation on the dataset.
+        %
+        % Inputs:
+        %   obj     - Instance of the DeadDetector.
+        %   dataset - Input dataset on which the operation is performed.
+        %
+        % Outputs:
+        %   output  - Dataset with dead zones detected and corrected.
         function output = run(obj, dataset)
             x_axis = dataset(1,:);
             y_axis = dataset(2,:);
@@ -28,6 +43,16 @@ classdef DeadDetector < Operation
         end
     end
     methods(Access = private)
+        % Description:
+        %   Finds the nearest unique value index.
+        %
+        % Inputs:
+        %   obj        - Instance of the DeadDetector.
+        %   start_index - Start index for search.
+        %   y_axis     - Y-axis values of the dataset.
+        %
+        % Outputs:
+        %   closest    - Index of the nearest unique value.
         function closest = nearest_unique(obj, start_index, y_axis)
             index = start_index;
             selected_value = y_axis(start_index);
@@ -44,6 +69,18 @@ classdef DeadDetector < Operation
             closest = index;
         end
 
+        % Description:
+        %   Pacifies the dead zone by fitting a curve.
+        %
+        % Inputs:
+        %   obj                 - Instance of the DeadDetector.
+        %   left_unique_index   - Start index of the dead zone.
+        %   right_unique_index  - End index of the dead zone.
+        %   x_axis              - X-axis values of the dataset.
+        %   y_axis              - Y-axis values of the dataset.
+        %
+        % Outputs:
+        %   fit_y_values        - Values of the fitted curve within the dead zone.
         function fit_y_values = pacify_death(obj, left_unique_index, right_unique_index, x_axis, y_axis)
             dead_indicies = left_unique_index:1:right_unique_index;
             model = polyfit([x_axis(left_unique_index), x_axis(right_unique_index)], ...

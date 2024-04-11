@@ -5,6 +5,17 @@ classdef DataInput < handle
     end
 
     methods(Access = public)
+        % Description:
+        %   Initializes a DataInput object with the provided dataset information.
+        %
+        % Inputs:
+        %   dataset_name      - Name of the dataset.
+        %   dataset           - Input dataset containing x and y values.
+        %   x_column_index    - Index of the column containing x values in the dataset.
+        %   y_column_range    - Range of column indices containing y values in the dataset.
+        %
+        % Outputs:
+        %   obj               - Initialized DataInput object.
         function obj = DataInput(dataset_name, dataset, x_column_index, y_column_range)
             x_axis = dataset(:,x_column_index).';
             y_axis = dataset(:,y_column_range(1):y_column_range(2));

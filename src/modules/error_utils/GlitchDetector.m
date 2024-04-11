@@ -6,6 +6,14 @@ classdef GlitchDetector < Operation
         cluster_identity_threshold int32
     end
     methods(Access = public)
+        % Description:
+        %   Constructor for GlitchDetector class.
+        %
+        % Inputs:
+        %   max_roc_deviation           - Maximum rate of change deviation allowed for glitch detection.
+        %   lookbehind                  - Number of data points to look behind for glitch identification.
+        %   max_cluster_distance        - Maximum distance allowed between glitch points to consider them in the same cluster.
+        %   cluster_identity_threshold  - Minimum number of glitch points required to identify a cluster.
         function obj = GlitchDetector(max_roc_deviation, lookbehind, max_cluster_distance, cluster_identity_threshold);
             obj.max_roc_deviation = max_roc_deviation;
             obj.lookbehind = lookbehind;
@@ -13,6 +21,15 @@ classdef GlitchDetector < Operation
             obj.cluster_identity_threshold = cluster_identity_threshold;
         end
 
+        % Description:
+        %   Runs the glitch detection operation on the dataset.
+        %
+        % Inputs:
+        %   obj     - Instance of the GlitchDetector.
+        %   dataset - Input dataset on which the operation is performed.
+        %
+        % Outputs:
+        %   output  - Dataset with detected glitches corrected.
         function output = run(obj, dataset)
             x_axis = dataset(1,:);
             y_axis = dataset(2,:);
@@ -40,6 +57,15 @@ classdef GlitchDetector < Operation
     end
 
     methods(Access = private)
+        % Description:
+        %   Identifies clusters of glitch points.
+        %
+        % Inputs:
+        %   obj                - Instance of the GlitchDetector.
+        %   derivative_indicies - Indices of points with significant rate of change.
+        %
+        % Outputs:
+        %   cluster_start_indicies - Indices indicating the start of each glitch cluster.
         function cluster_start_indicies = identify_clusters(obj, derivative_indicies)
             cluster_start_indicies = [];
             current_cluster = [];
@@ -56,6 +82,16 @@ classdef GlitchDetector < Operation
             end
         end
 
+        % Description:
+        %   Identifies the end index of a glitch cluster.
+        %
+        % Inputs:
+        %   obj          - Instance of the GlitchDetector.
+        %   y_axis       - Y-axis values of the dataset.
+        %   start_index  - Start index of the glitch cluster.
+        %
+        % Outputs:
+        %   end_index    - End index of the glitch cluster.
         function end_index = identify_glitch_end(obj, y_axis, start_index)
             index = start_index;
             while (index < numel(y_axis)) && y_axis(index) <= y_axis(start_index)

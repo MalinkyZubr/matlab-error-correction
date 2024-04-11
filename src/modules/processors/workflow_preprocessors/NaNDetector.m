@@ -1,5 +1,14 @@
 classdef NaNDetector < AggregateDataProcessor
     methods(Access = public)
+        % Description:
+        %   Processes the dataset to handle NaN values by linear interpolation.
+        %
+        % Inputs:
+        %   obj     - Instance of the NaNDetector.
+        %   dataset - Input dataset containing NaN values to be handled.
+        %
+        % Outputs:
+        %   output  - Processed dataset with NaN values handled by linear interpolation.
         function output = process_data(obj, dataset)
             x_axis = dataset(1,:);
             y_axis = dataset(2,:);
