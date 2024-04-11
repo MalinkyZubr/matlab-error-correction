@@ -5,7 +5,7 @@ classdef (Abstract) SlidingWindow < Operation
     end
 
     methods(Abstract)
-        filtered_value = sliding_operation(obj, dataset_slice, index)
+        filtered_value = sliding_operation(obj, dataset_slice, x_value)
     end
 
     methods(Access = public)
@@ -14,10 +14,12 @@ classdef (Abstract) SlidingWindow < Operation
         end
 
         function corrected_dataset = run(obj, dataset)
+            x_axis = dataset(1,:);
+
             for index = 1:1:numel(dataset(1,:))
                 window = obj.windowing_function.window(index, dataset);
                 processed_data = obj.apply_preprocessors(window);
-                dataset(index) = obj.sliding_operation(processed_data, index);
+                dataset(2, index) = obj.sliding_operation(processed_data, x_axis(index));
             end
             corrected_dataset = dataset;
         end
@@ -28,9 +30,11 @@ classdef (Abstract) SlidingWindow < Operation
     end
     methods(Access = private)
         function processed_data = apply_preprocessors(obj, data_slice)
-            if numel(obj.data_processors) == 0
+            if numel(obj.data_processors) ~= 0
                 for index = 1:1:numel(obj.data_processors)
+                    %data_slice
                     data_slice = obj.data_processors{index}.process_data(data_slice);
+                    %data_slice
                 end
             end
             processed_data = data_slice;

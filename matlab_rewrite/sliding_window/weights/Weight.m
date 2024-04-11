@@ -1,31 +1,32 @@
 classdef(Abstract) Weight < DataProcessor
-    properties(Access = protected)
-        height_multiplier double
-    end
     methods(Abstract)
         weights = generate_weights(obj, data)
     end
 
     methods(Access = public)
-        function obj = Weight(height_multiplier)
-            obj.height_multiplier = height_multiplier;
-        end
-
         function corrected_dataset = process_data(obj, data)
-            weights = obj.generate_weights(obj, obj.generate_weight_x_axis(numel(data(1,:)))) * obj.height_multiplier;
-
-            corrected_dataset = []; 
+            x_axis_slice = data(1,:);
+            y_axis_slice = data(2,:);
+            weights = obj.generate_weights(obj.generate_weight_x_axis(numel(data(1,:))));
+            
+            corrected_y = []; 
+            corrected_x = [];
 
             for index = 1:1:numel(data(1,:))
-                fragment = ones(1, weights(index), "double") .* data(index);
-                cat(2, corrected_dataset, fragment);
+                fragment_y = ones(1, weights(index), "double") .* y_axis_slice(index);
+                corrected_y = cat(2, corrected_y, fragment_y);
+                
+                fragment_x = ones(1, weights(index), "double") .* x_axis_slice(index);
+                corrected_x = cat(2, corrected_x, fragment_x);
             end
+
+            corrected_dataset = cat(1, corrected_x, corrected_y);
         end
     end
 
     methods(Access = protected)
         function weight_x = generate_weight_x_axis(obj, data_length)
-            weight_x = -(data_length / 2) + 1:1:(data_length / 2) - 1;
+            weight_x = -int32(data_length / 2) + 1:1:int32(data_length / 2) - 1;
         end
     end
 end

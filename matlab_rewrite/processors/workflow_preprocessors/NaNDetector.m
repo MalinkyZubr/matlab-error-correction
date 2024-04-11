@@ -1,6 +1,6 @@
-classdef NaNDetector < Operation
+classdef NaNDetector < AggregateDataProcessor
     methods(Access = public)
-        function output = run(obj, dataset)
+        function output = process_data(obj, dataset)
             x_axis = dataset(1,:);
             y_axis = dataset(2,:);
             
@@ -23,6 +23,10 @@ classdef NaNDetector < Operation
                 end
             end
             output = cat(1, x_axis, y_axis);
+        end
+
+        function corrected_dataset = de_process_data(obj, data)
+            corrected_dataset = data;
         end
     end
 end

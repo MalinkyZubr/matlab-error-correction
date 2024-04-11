@@ -9,6 +9,7 @@ classdef (Abstract) WindowingFunction < handle & matlab.mixin.Heterogeneous
 
     methods (Access = public)
         function obj = WindowingFunction(window_width)
+            mustBeOdd(window_width);
             obj.window_width = window_width;
         end
 

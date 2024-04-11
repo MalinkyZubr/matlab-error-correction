@@ -9,9 +9,9 @@ classdef LoessFilter < SlidingWindow
             obj.polynomial_degree = polynomial_degree;
         end
 
-        function filtered_value = sliding_operation(obj, dataset_slice, index)
+        function filtered_value = sliding_operation(obj, dataset_slice, x_value)
             polynomial = polyfit(dataset_slice(1,:), dataset_slice(2,:), obj.polynomial_degree);
-            filtered_value = polyval(polynomial, index);
+            filtered_value = polyval(polynomial, x_value);
         end
     end
 end
