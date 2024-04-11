@@ -1,15 +1,22 @@
-addpath("tests");
-addpath("src");
-addpath(genpath("src/error_utils"));
-addpath(genpath("src/filters"));
-addpath(genpath("src/sliding_window"))
+addpath(genpath("../src"));
 
-data = readmatrix("sp24_cruiseAuto_experimental_data.csv");
-data = data(:,1:2);
+aggregate_data = readmatrix("sp24_cruiseAuto_experimental_data.csv");
 
-%time = 1:1:10000;
-%speed = log10(time);
-%speed = speed + 0.5*rand(size(speed)) - 0.5*rand(size(speed));
-%speed(55) = 0.9;
+data_input1 = DataInput("Compact Summer Test", aggregate_data, 1, [2, 6]);
+data_input2 = DataInput("Compact Yearround Test", aggregate_data, 1, [7, 11]);
+data_input3 = DataInput("Compact Winter Test", aggregate_data, 1, [12, 16]);
+
+new_data = error_correct({data_input2});
+
+
+for index = 1:1:numel(new_data)
+    subplot(2, 2, index)
+    data = new_data{index}.get_dataset();
+    name = new_data{index}.get_name();
+
+    plot(data(1,:), data(2,:));
+    title(name);
+end
+
 %speed(95) = 3.5;
 
