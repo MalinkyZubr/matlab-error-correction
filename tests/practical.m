@@ -20,8 +20,11 @@ data_input9 = DataInput("Suv Winter Test", aggregate_data, 1, [42, 46]);
 % Cell array of data input objects, make sure it is a cell array
 old_data = {data_input1, data_input2, data_input3, data_input4, data_input5, data_input6, data_input7, data_input8, data_input9};
 
+workflow = workflow_factory(true); % generate an error correction workflow
+% 'true' to specify that the error correction should be completed thoroughly
+
 % this includes 9 datasets, each is the corrected averaging of the corresponding data.
-new_data = error_correct(old_data, workflow_factory(true)); % returns a cell array of all the requested datasets
+new_data = error_correct(old_data, workflow); % returns a cell array of all the requested datasets
 
 y_column = new_data{1}.get_y_axis_column(); % get the y axis in column form
 x_column = new_data{1}.get_x_axis_column(); % get the x axis in column form
