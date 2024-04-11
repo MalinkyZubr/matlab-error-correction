@@ -1,3 +1,0 @@
-classdef OperationsGroup < Operations
-    
-end

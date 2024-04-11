@@ -1,2 +1,0 @@
-classdef GaussianWeightScheme < BaseWeightScheme
-end
