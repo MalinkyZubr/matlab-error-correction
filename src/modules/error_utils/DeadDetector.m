@@ -33,9 +33,12 @@ classdef DeadDetector < Operation
             selected_value = y_axis(start_index);
             start_value = selected_value;
 
-            while selected_value == start_value
+            while (selected_value == start_value) && index < numel(y_axis)
                 index = index + 1;
                 selected_value = y_axis(index);
+            end
+            if index == numel(y_axis)
+                index = start_index - 10;
             end
 
             closest = index;

@@ -12,6 +12,9 @@ classdef NaNDetector < AggregateDataProcessor
                     while isnan(y_axis(search_index)) && search_index < numel(x_axis)
                         search_index = search_index + 1;
                     end
+                    if search_index == numel(x_axis)
+                        search_index = start_index - 10;
+                    end
                     indicies = [start_index - 1, search_index];
 
                     x = x_axis(indicies);

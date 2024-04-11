@@ -18,6 +18,14 @@ classdef DataInput < handle
             dataset_aligned = obj.dataset_aligned;
         end
 
+        function x_axis = get_x_axis_column(obj)
+            x_axis = obj.dataset_aligned(1,:).';
+        end
+
+        function y_axis = get_y_axis_column(obj)
+            y_axis = obj.dataset_aligned(2,:).';
+        end
+
         function set_dataset(obj, new_dataset)
             obj.dataset_aligned = new_dataset;
         end
