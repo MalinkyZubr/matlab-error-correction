@@ -35,10 +35,10 @@ function [workflow] = workflow_factory(thorough)
             mean_filter = MeanFilter(CenterWindow(widths(index)));
             mean_filter.add_preprocessor(QuadraticWeightScheme());
             workflow.add_operation(mean_filter);
-            loess_filter = LoessFilter(CenterWindow(widths(index) * 3), 1);
+            loess_filter = PolynomialFilter(CenterWindow(widths(index) * 3), 1);
             loess_filter.add_preprocessor(QuadraticWeightScheme());
             workflow.add_operation(loess_filter);
-            workflow.add_operation(LoessFilter(CenterWindow(widths(index)), 2))
+            workflow.add_operation(PolynomialFilter(CenterWindow(widths(index)), 2))
         end
     end
 end

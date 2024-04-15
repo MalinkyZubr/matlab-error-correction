@@ -38,11 +38,8 @@ classdef (Abstract) WindowingFunction < handle & matlab.mixin.Heterogeneous
         % Outputs:
         %   generated_window - Window slice generated from the dataset.
         function generated_window = window(obj, index, dataset)
-            x_axis = dataset(1,:);
-            y_axis = dataset(2,:);
-            max = numel(dataset(1,:));
+            max = size(dataset, 2);
             base_window_indicies = obj.generate_indicies(index);
-            mustBeLength(base_window_indicies, obj.window_width);
             
             if base_window_indicies(end) > max
                 window_x = obj.exceeds_max(base_window_indicies, max);
@@ -52,8 +49,7 @@ classdef (Abstract) WindowingFunction < handle & matlab.mixin.Heterogeneous
                 window_x = base_window_indicies;
             end
 
-            mustBeLength(window_x, obj.window_width);
-            generated_window = cat(1, x_axis(window_x), y_axis(window_x));
+            generated_window = dataset(1:2, window_x(1):window_x(2));
         end
     end
 
@@ -71,7 +67,7 @@ classdef (Abstract) WindowingFunction < handle & matlab.mixin.Heterogeneous
         function adjusted_indicies = exceeds_max(obj, base_window, max)
             exceeding = base_window(end);
             shift = exceeding - max;
-            adjusted_indicies = base_window(1) - shift:1:max;
+            adjusted_indicies = [base_window(1) - shift, max];
         end
 
         % Description:
@@ -85,7 +81,7 @@ classdef (Abstract) WindowingFunction < handle & matlab.mixin.Heterogeneous
         %   adjusted_indices - Adjusted window indices.
         function adjusted_indicies = exceeds_min(obj, base_window)
             exceeding = abs(base_window(1)) + 1;
-            adjusted_indicies = 1:1:base_window(end) + exceeding;
+            adjusted_indicies = [1, base_window(end) + exceeding];
         end
     end
 end

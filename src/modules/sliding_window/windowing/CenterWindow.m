@@ -11,7 +11,7 @@ classdef CenterWindow < WindowingFunction
         %   window_indices - Indices of the center-aligned window.
         function window_indicies = generate_indicies(obj, index)
             side_bound = round((obj.window_width / 2) - 0.5);
-            window_indicies = index - side_bound:1:index + side_bound - 2;
+            window_indicies = [index - side_bound, index + side_bound - 2];
         end
     end
 end

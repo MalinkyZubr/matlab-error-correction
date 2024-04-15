@@ -1,20 +1,5 @@
 classdef LoessFilter < SlidingWindow
-    properties(Access = private)
-        polynomial_degree int32;
-    end
-
     methods(Access = public)
-        % Description:
-        %   Constructor for LoessFilter class.
-        %
-        % Inputs:
-        %   windowing_function - Windowing function object to be used for generating window slices.
-        %   polynomial_degree  - Degree of the polynomial for fitting the data.
-        function obj = LoessFilter(windowing_function, polynomial_degree)
-            obj@SlidingWindow(windowing_function)
-            obj.polynomial_degree = polynomial_degree;
-        end
-
         % Description:
         %   Applies Loess filter to the dataset slice.
         %
@@ -26,8 +11,25 @@ classdef LoessFilter < SlidingWindow
         % Outputs:
         %   filtered_value - Result of the Loess filter operation.
         function filtered_value = sliding_operation(obj, dataset_slice, x_value)
-            polynomial = polyfit(dataset_slice(1,:), dataset_slice(2,:), obj.polynomial_degree);
-            filtered_value = polyval(polynomial, x_value);
+            coefficients = obj.generate_loess_model(dataset_slice);
+            filtered_value = (coefficients(1) * x_value) + coefficients(2)
+        end
+    end
+
+    methods(Access = private)
+        function coefficients = generate_loess_model(obj, dataset_slice)
+            num_elements = size(dataset_slice, 2)
+            sum_prod = sum(prod(dataset_slice))
+
+            sum_y = sum(dataset_slice(2,:))
+            prod_sum = sum(dataset_slice(1,:)) + sum_y
+
+            x_squared_sum = sum(dataset_slice(1,:) .^ 2)
+            x_sum_squared = sum(dataset_slice(1,:)) ^ 2
+
+            slope = ((num_elements * sum_prod) - prod_sum) / ((num_elements * x_squared_sum) - x_sum_squared)
+            intercept = (sum_y - (slope * sum(dataset_slice(1,:)))) / num_elements
+            coefficients = [slope, intercept]
         end
     end
 end

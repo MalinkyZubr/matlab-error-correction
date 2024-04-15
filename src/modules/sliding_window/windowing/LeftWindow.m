@@ -10,7 +10,7 @@ classdef LeftWindow < WindowingFunction
         % Outputs:
         %   window_indices - Indices of the left-aligned window.
         function window_indicies = generate_indicies(obj, index)
-            window_indicies = index - (obj.window_width + 1):1:index;
+            window_indicies = [index - (obj.window_width + 1), index];
         end
     end
 end

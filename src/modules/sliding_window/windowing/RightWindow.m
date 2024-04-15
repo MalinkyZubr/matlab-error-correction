@@ -10,7 +10,7 @@ classdef RightWindow < WindowingFunction
         % Outputs:
         %   window_indices - Indices of the right-aligned window.
         function window_indicies = generate_indicies(obj, index)
-            window_indicies = index:1:index + (obj.window_width - 1);
+            window_indicies = [index, index + (obj.window_width - 1)];
         end
     end
 end
