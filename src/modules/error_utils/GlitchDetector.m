@@ -44,7 +44,7 @@ classdef GlitchDetector < Operation
             if numel(glitch_cluster_start_indicies) > 0
                 for n = 1:1:numel(glitch_cluster_start_indicies)
                     glitch_start_index = glitch_cluster_start_indicies(n) - obj.lookbehind;
-                    glitch_end_index = obj.identify_glitch_end(y_axis, glitch_start_index)
+                    glitch_end_index = obj.identify_glitch_end(y_axis, glitch_start_index);
                     p = polyfit([x_axis(glitch_start_index), x_axis(glitch_end_index)], ...
                                 [y_axis(glitch_start_index), y_axis(glitch_end_index)], 1);
                     
